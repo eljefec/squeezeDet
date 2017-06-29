@@ -251,7 +251,7 @@ vector<double> getThresholds(vector<double> &v, double n_groundtruth){
 
     // check if right-hand-side recall with respect to current recall is close than left-hand-side one
     // in this case, skip the current detection score
-    double l_recall, r_recall, recall;
+    double l_recall, r_recall;
     l_recall = (double)(i+1)/n_groundtruth;
     if(i<(v.size()-1))
       r_recall = (double)(i+2)/n_groundtruth;
@@ -262,7 +262,6 @@ vector<double> getThresholds(vector<double> &v, double n_groundtruth){
       continue;
 
     // left recall is the best approximation, so use this and goto next recall step for approximation
-    recall = l_recall; // FIXME_MWM: what's up here? seems like a valid warning ...
 
     // the next recall step was reached
     t.push_back(v[i]);

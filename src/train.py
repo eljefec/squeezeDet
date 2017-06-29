@@ -109,7 +109,8 @@ def train():
   with tf.Graph().as_default():
 
     assert FLAGS.net == 'vgg16' or FLAGS.net == 'resnet50' \
-        or FLAGS.net == 'squeezeDet' or FLAGS.net == 'squeezeDet+', \
+        or FLAGS.net == 'squeezeDet' or FLAGS.net == 'squeezeDet+' \
+        or FLAGS.net == 'didi', \
         'Selected neural net architecture not supported: {}'.format(FLAGS.net)
     if FLAGS.net == 'vgg16':
       mc = kitti_vgg16_config()
@@ -131,6 +132,11 @@ def train():
       mc.IS_TRAINING = True
       mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
       model = SqueezeDetPlus(mc)
+    elif FLAGS.net == 'didi':
+      mc = didi_squeezeDet_config()
+      mc.IS_TRAINING = True
+      mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
+      model = SqueezeDet(mc)
 
     imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
 
@@ -262,7 +268,7 @@ def train():
     threads = tf.train.start_queue_runners(coord=coord, sess=sess)
     run_options = tf.RunOptions(timeout_in_ms=60000)
 
-    # try: 
+    # try:
     for step in xrange(FLAGS.max_steps):
       if coord.should_stop():
         sess.run(model.FIFOQueue.close(cancel_pending_enqueues=True))

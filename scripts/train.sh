@@ -49,8 +49,11 @@ while test $# -gt 0; do
   esac
 done
 
-case "$NET" in 
+case "$NET" in
   "squeezeDet")
+    export PRETRAINED_MODEL_PATH="./data/SqueezeNet/squeezenet_v1.1.pkl"
+    ;;
+  "didi")
     export PRETRAINED_MODEL_PATH="./data/SqueezeNet/squeezenet_v1.1.pkl"
     ;;
   "squeezeDet+")

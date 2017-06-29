@@ -143,7 +143,8 @@ def evaluate():
   with tf.Graph().as_default() as g:
 
     assert FLAGS.net == 'vgg16' or FLAGS.net == 'resnet50' \
-        or FLAGS.net == 'squeezeDet' or FLAGS.net == 'squeezeDet+', \
+        or FLAGS.net == 'squeezeDet' or FLAGS.net == 'squeezeDet+' \
+        or FLAGS.net == 'didi', \
         'Selected neural net architecture not supported: {}'.format(FLAGS.net)
     if FLAGS.net == 'vgg16':
       mc = kitti_vgg16_config()
@@ -165,6 +166,11 @@ def evaluate():
       mc.BATCH_SIZE = 1 # TODO(bichen): allow batch size > 1
       mc.LOAD_PRETRAINED_MODEL = False
       model = SqueezeDetPlus(mc)
+    elif FLAGS.net == 'didi':
+      mc = didi_squeezeDet_config()
+      mc.BATCH_SIZE = 1 # TODO(bichen): allow batch size > 1
+      mc.LOAD_PRETRAINED_MODEL = False
+      model = SqueezeDet(mc)
 
     imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
 
@@ -205,8 +211,8 @@ def evaluate():
     saver = tf.train.Saver(model.model_params)
 
     summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
-    
-    ckpts = set() 
+
+    ckpts = set()
     while True:
       if FLAGS.run_once:
         # When run_once is true, checkpoint_path should point to the exact
