@@ -10,8 +10,8 @@ def didi_squeezeDet_config():
   """Specify the parameters to tune below."""
   mc                       = base_model_config('KITTI')
 
-  mc.IMAGE_WIDTH           = 608
-  mc.IMAGE_HEIGHT          = 608
+  mc.IMAGE_WIDTH           = 640
+  mc.IMAGE_HEIGHT          = 640
   mc.BATCH_SIZE            = 20
 
   mc.WEIGHT_DECAY          = 0.0001
@@ -43,7 +43,7 @@ def didi_squeezeDet_config():
   return mc
 
 def set_anchors(mc):
-  H, W, B = 38, 38, 9
+  H, W, B = int(mc.IMAGE_HEIGHT / 16), int(mc.IMAGE_WIDTH / 16), 9
   anchor_shapes = np.reshape(
       [np.array(
           [[  36.,  37.], [ 366., 174.], [ 115.,  59.],
