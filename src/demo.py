@@ -29,16 +29,16 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string(
     'mode', 'image', """'image' or 'video'.""")
 tf.app.flags.DEFINE_string(
-    'checkpoint', './data/model_checkpoints/didi/model.ckpt-6000',
+    'checkpoint', './data/model_checkpoints/squeezeDet/model.ckpt-87000',
     """Path to the model parameter file.""")
 tf.app.flags.DEFINE_string(
-    'input_path', './data/KITTI/training/image_2/0*0000.png',
+    'input_path', './data/sample.png',
     """Input image or video to be detected. Can process glob input such as """
     """./data/00000*.png.""")
 tf.app.flags.DEFINE_string(
     'out_dir', './data/out/', """Directory to dump output image or video.""")
 tf.app.flags.DEFINE_string(
-    'demo_net', 'didi', """Neural net architecture.""")
+    'demo_net', 'squeezeDet', """Neural net architecture.""")
 
 
 def video_demo():
@@ -56,7 +56,7 @@ def video_demo():
   # out.open()
 
   assert FLAGS.demo_net == 'squeezeDet' or FLAGS.demo_net == 'squeezeDet+' \
-         or FLAGS.demo_net == 'didi', \
+         or FLAGS.demo_net == 'didi' or FLAGS.demo_net == 'panorama', \
       'Selected nueral net architecture not supported: {}'.format(FLAGS.demo_net)
 
   with tf.Graph().as_default():
@@ -74,6 +74,12 @@ def video_demo():
       model = SqueezeDetPlus(mc, FLAGS.gpu)
     elif FLAGS.demo_net == 'didi':
       mc = didi_squeezeDet_config()
+      mc.BATCH_SIZE = 1
+      # model parameters will be restored from checkpoint
+      mc.LOAD_PRETRAINED_MODEL = False
+      model = SqueezeDet(mc, FLAGS.gpu)
+    elif FLAGS.demo_net == 'panorama':
+      mc = panorama_squeezeDet_config()
       mc.BATCH_SIZE = 1
       # model parameters will be restored from checkpoint
       mc.LOAD_PRETRAINED_MODEL = False
@@ -169,7 +175,7 @@ def image_demo():
   """Detect image."""
 
   assert FLAGS.demo_net == 'squeezeDet' or FLAGS.demo_net == 'squeezeDet+' \
-         or FLAGS.demo_net == 'didi', \
+         or FLAGS.demo_net == 'didi' or FLAGS.demo_net == 'panorama', \
       'Selected nueral net architecture not supported: {}'.format(FLAGS.demo_net)
 
   with tf.Graph().as_default():
@@ -187,6 +193,11 @@ def image_demo():
       model = SqueezeDetPlus(mc, FLAGS.gpu)
     elif FLAGS.demo_net == 'didi':
       mc = didi_squeezeDet_config()
+      mc.BATCH_SIZE = 1
+      mc.LOAD_PRETRAINED_MODEL = False
+      model = SqueezeDet(mc, FLAGS.gpu)
+    elif FLAGS.demo_net == 'panorama':
+      mc = panorama_squeezeDet_config()
       mc.BATCH_SIZE = 1
       mc.LOAD_PRETRAINED_MODEL = False
       model = SqueezeDet(mc, FLAGS.gpu)

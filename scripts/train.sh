@@ -56,6 +56,9 @@ case "$NET" in
   "didi")
     export PRETRAINED_MODEL_PATH="./data/SqueezeNet/squeezenet_v1.1.pkl"
     ;;
+  "panorama")
+    export PRETRAINED_MODEL_PATH="./data/SqueezeNet/squeezenet_v1.1.pkl"
+    ;;
   "squeezeDet+")
     export PRETRAINED_MODEL_PATH="./data/SqueezeNet/squeezenet_v1.0_SR_0.750.pkl"
     ;;

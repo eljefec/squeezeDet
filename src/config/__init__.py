@@ -4,3 +4,4 @@ from kitti_res50_config import kitti_res50_config
 from kitti_squeezeDet_config import kitti_squeezeDet_config
 from kitti_squeezeDetPlus_config import kitti_squeezeDetPlus_config
 from didi_squeezeDet_config import didi_squeezeDet_config
+from panorama_squeezeDet_config import panorama_squeezeDet_config

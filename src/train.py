@@ -110,7 +110,7 @@ def train():
 
     assert FLAGS.net == 'vgg16' or FLAGS.net == 'resnet50' \
         or FLAGS.net == 'squeezeDet' or FLAGS.net == 'squeezeDet+' \
-        or FLAGS.net == 'didi', \
+        or FLAGS.net == 'didi' or FLAGS.net == 'panorama', \
         'Selected neural net architecture not supported: {}'.format(FLAGS.net)
     if FLAGS.net == 'vgg16':
       mc = kitti_vgg16_config()
@@ -134,6 +134,11 @@ def train():
       model = SqueezeDetPlus(mc)
     elif FLAGS.net == 'didi':
       mc = didi_squeezeDet_config()
+      mc.IS_TRAINING = True
+      mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
+      model = SqueezeDet(mc)
+    elif FLAGS.net == 'panorama':
+      mc = panorama_squeezeDet_config()
       mc.IS_TRAINING = True
       mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
       model = SqueezeDet(mc)
